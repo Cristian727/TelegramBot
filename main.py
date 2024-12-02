@@ -12,7 +12,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 # Función principal
 def main():
     # Token del bot proporcionado por BotFather
-    BOT_TOKEN = "AAEPy39sx7Xu11AYblXN8foDrqvUYlXhyCk"
+    BOT_TOKEN = "8141991348:AAEPy39sx7Xu11AYblXN8foDrqvUYlXhyCk"
 
     # Crear la aplicación con ApplicationBuilder
     app = ApplicationBuilder().token(BOT_TOKEN).build()
