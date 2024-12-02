@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import random
+import subprocess  # Importamos subprocess para ejecutar comandos del sistema
 
 # Cargar las variables de entorno del archivo .env
 load_dotenv()
@@ -69,6 +70,31 @@ async def legendario(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
     else:
         await update.message.reply_text("Hubo un problema al obtener la imagen del Pokémon legendario.")
 
+# Función para manejar el comando /saludo
+async def saludo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    # Verificar si el usuario ingresó un nombre después del comando /saludo
+    if context.args:
+        # Tomar el primer argumento como el nombre
+        nombre = ' '.join(context.args)  # En caso de que el nombre tenga espacios
+        await update.message.reply_text(f"¡Hola, {nombre}!")
+    else:
+        # Si no se proporciona un nombre, responder con un saludo genérico
+        await update.message.reply_text("¡Hola! ¿Cómo te llamas?")
+
+# Función para manejar el comando /ping
+async def ping_google(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    # Ejecutar el comando `ping -c 4 google.com`
+    try:
+        result = subprocess.run(['ping', '-c', '4', 'google.com'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        
+        # Si el comando se ejecutó correctamente, mostrar el resultado
+        if result.returncode == 0:
+            await update.message.reply_text(f"Resultado del ping a Google:\n\n{result.stdout}")
+        else:
+            await update.message.reply_text(f"Hubo un error al realizar el ping: {result.stderr}")
+    except Exception as e:
+        await update.message.reply_text(f"Hubo un error al realizar el ping: {e}")
+
 # Función principal
 def main():
     # Crear la aplicación con ApplicationBuilder
@@ -82,6 +108,12 @@ def main():
 
     # Manejar el comando /legendario
     app.add_handler(CommandHandler("legendario", legendario))
+
+    # Manejar el comando /saludo
+    app.add_handler(CommandHandler("saludo", saludo))
+
+    # Manejar el comando /ping
+    app.add_handler(CommandHandler("ping", ping_google))
 
     # Manejar mensajes de texto
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, responder_hola))
