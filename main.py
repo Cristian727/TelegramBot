@@ -1,5 +1,13 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, ContextTypes, filters
+from dotenv import load_dotenv
+import os
+
+# Cargar las variables de entorno del archivo .env
+load_dotenv()
+
+# Obtén el token desde la variable de entorno
+BOT_TOKEN = os.getenv("API_KEY")
 
 # Función para responder a los mensajes
 async def responder_hola(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -11,9 +19,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 # Función principal
 def main():
-    # Token del bot proporcionado por BotFather
-    BOT_TOKEN = "8141991348:AAEPy39sx7Xu11AYblXN8foDrqvUYlXhyCk"
-
     # Crear la aplicación con ApplicationBuilder
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
